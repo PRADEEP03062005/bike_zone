@@ -1,0 +1,21 @@
+{
+  "name": "saimanikanta-bike-zone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev",
+    "seed": "node scripts/create-admin.js",
+    "health": "node api/health.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "argon2": "^0.30.0",
+    "cookie": "^0.6.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^58.9.0"
+  }
+}
