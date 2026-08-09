@@ -13,15 +13,28 @@
       <nav class="site-nav">
         <a href="/">Home</a>
         <a href="/bikes.html">Used Bikes</a>
-        <a href="/finance.html">Finance</a>
+        <a href="/admin/">Admin</a>
         <a href="/login.html">Login</a>
       </nav>
     </div>
   </header>
 
   <main class="container section">
-    <h1>Finance & Used Bikes</h1>
-    <p>Browse available bikes below. Filtering and search will be supported by the API.</p>
+    <div class="section-heading-block">
+      <p class="eyebrow">Browse bikes</p>
+      <h1>Find the right bike for your daily ride.</h1>
+      <p>Use the compact search and pickup the most suitable option in seconds.</p>
+    </div>
+
+    <div class="filter-card">
+      <input type="text" placeholder="Search brand or model" />
+      <select>
+        <option>All statuses</option>
+        <option>Available</option>
+        <option>Sold</option>
+      </select>
+    </div>
+
     <div class="bike-grid" id="bike-grid">
       <div class="bike-card placeholder">
         <p>Bike inventory will load here once the API is implemented.</p>
