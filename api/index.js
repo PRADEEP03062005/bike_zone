@@ -3,6 +3,7 @@ import bikesHandler from './bikes.js';
 import healthHandler from './health.js';
 import registrationRequestsHandler from './admin/registration-requests.js';
 import usersHandler from './admin/users.js';
+import contactsHandler from './admin/contacts.js';
 
 export default function handler(request, response) {
   const url = new URL(request.url, `https://${request.headers.host}`);
@@ -26,6 +27,10 @@ export default function handler(request, response) {
 
   if (path === '/admin/users' || path.startsWith('/admin/users/')) {
     return usersHandler(request, response);
+  }
+
+  if (path === '/admin/contacts' || path.startsWith('/admin/contacts/')) {
+    return contactsHandler(request, response);
   }
 
   response.status(404).setHeader('Content-Type', 'application/json');
