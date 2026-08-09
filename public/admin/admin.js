@@ -12,6 +12,9 @@ const usersList = document.getElementById('users-list');
 const usersSummary = document.getElementById('users-summary');
 const addBikeForm = document.getElementById('add-bike-form');
 const bikeFormMessage = document.getElementById('bike-form-message');
+const contactForm = document.getElementById('contact-form');
+const contactFormMessage = document.getElementById('contact-form-message');
+const contactsTableBody = document.getElementById('contacts-table-body');
 const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
 const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
 
@@ -30,11 +33,12 @@ tabButtons.forEach((button) => {
 
 async function loadAdminData() {
   try {
-    const [me, requestsData, bikesData, usersData] = await Promise.all([
+    const [me, requestsData, bikesData, usersData, contactsData] = await Promise.all([
       api.get('/auth/me'),
       api.get('/admin/registration-requests'),
       api.get('/bikes'),
-      api.get('/admin/users')
+      api.get('/admin/users'),
+      api.get('/admin/contacts')
     ]);
 
     const user = me.user;
@@ -106,6 +110,22 @@ async function loadAdminData() {
       });
     }
 
+    const contacts = contactsData.contacts || [];
+    contactsTableBody.innerHTML = '';
+    if (contacts.length === 0) {
+      contactsTableBody.innerHTML = '<tr><td colspan="3">No contacts yet.</td></tr>';
+    } else {
+      contacts.forEach((contact) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${contact.name}</td>
+          <td>${contact.phone}</td>
+          <td>${contact.status || 'ACTIVE'}</td>
+        `;
+        contactsTableBody.appendChild(row);
+      });
+    }
+
   } catch (error) {
     authState.textContent = error.message || 'Unable to load admin data';
   }
@@ -140,6 +160,23 @@ usersList.addEventListener('click', async (event) => {
     await loadAdminData();
   } catch (error) {
     alert(error.message || 'Role update failed');
+  }
+});
+
+contactForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  contactFormMessage.textContent = '';
+
+  const formData = new FormData(contactForm);
+  const payload = Object.fromEntries(formData.entries());
+
+  try {
+    await api.post('/admin/contacts', payload);
+    contactFormMessage.textContent = 'Contact added successfully.';
+    contactForm.reset();
+    await loadAdminData();
+  } catch (error) {
+    contactFormMessage.textContent = error.message || 'Unable to save contact';
   }
 });
 
